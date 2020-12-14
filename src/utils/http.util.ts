@@ -2,7 +2,7 @@ interface HttpResponse<T> extends Response {
   parsedBody?: T
 }
 
-const BASE_PATH: string = `https://clava.io/api/`
+const BASE_PATH: string = `https://clava.io/api`
 
 export async function http<T>(
   path: RequestInfo
