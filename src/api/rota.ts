@@ -46,7 +46,7 @@ export default {
     })
   },
 
-  async getRota(rotaId?: number | string, userMap: Record<string, User>): Promise<RotaList> {
+  async getRota(userMap: Record<string, User>, rotaId?: number | string): Promise<RotaList> {
     return new Promise(async (resolve, reject) => {
       try {
         let response = await http<RotaList>(`rota/${rotaId}`);
@@ -73,7 +73,7 @@ export default {
         const newRotaId = response.parsedBody?.rotaId
         userList = (userList || await this.getUserList()) as User[];
         const userMap = UserUtil.createUserMapFromList(userList)
-        const newRota = await this.getRota(newRotaId, userMap)
+        const newRota = await this.getRota(userMap, newRotaId)
 
         resolve(newRota);
       } catch(error) {
