@@ -4,8 +4,8 @@ import { Rota } from './rota.model'
 export class RotaList {
   public rotaId: string;
   public rotaPeriod: {
-    startDate: string,
-    endDate: string
+    startDate: string;
+    endDate: string;
   };
   public rotas: Rota[];
 
@@ -16,8 +16,8 @@ export class RotaList {
   }
 
   public static generateFromAPI(response: {
-    rotaData: any,
-    userMap: Record<string, User>
+    rotaData: any;
+    userMap: Record<string, User>;
   }): RotaList {
     const rotaList = (response?.rotaData?.rota || []).map((rota: any) => {
       return new Rota({

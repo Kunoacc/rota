@@ -1,17 +1,16 @@
 import { RotaList } from '@/model/rota-list.model'
-import { Rota } from '@/model/rota.model'
 import { User } from '@/model/user.model'
 import { UserUtil } from '@/utils/user.util'
 import { http } from '@/utils/http.util'
-import { DEFAULT_API_ERROR_RESPONSE, DEFAULT_API_SUCCESS_RESPONSE } from '@/constants'
+import { DEFAULT_API_ERROR_RESPONSE } from '@/constants'
 
 export default {
   async getRotaList(): Promise<RotaList[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        let response = await http<{
-          users: User[],
-          rotas: RotaList[]
+        const response = await http<{
+          users: User[];
+          rotas: RotaList[];
         }>('rotas');
         const userList = response.parsedBody?.users ?? [];
         const rotaDataList = response.parsedBody?.rotas ?? [];
@@ -33,7 +32,7 @@ export default {
   async getUserList(): Promise<User[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        let response = await http<User[]>('users');
+        const response = await http<User[]>('users');
         const userDataList = response.parsedBody ?? [];
         const userList: User[] = userDataList.map((userData: any) => {
           return User.generateFromAPI(userData)
@@ -49,7 +48,7 @@ export default {
   async getRota(userMap: Record<string, User>, rotaId?: number | string): Promise<RotaList> {
     return new Promise(async (resolve, reject) => {
       try {
-        let response = await http<RotaList>(`rota/${rotaId}`);
+        const response = await http<RotaList>(`rota/${rotaId}`);
         const rota: RotaList = RotaList.generateFromAPI({
           rotaData: response.parsedBody,
           userMap
@@ -65,9 +64,9 @@ export default {
   async getNewRota(userList?: User[]): Promise<RotaList> {
     return new Promise(async (resolve, reject) => {
       try {
-        let response = await http<{
-          status: string,
-          rotaId: string | number
+        const response = await http<{
+          status: string;
+          rotaId: string | number;
         }>('generate');
 
         const newRotaId = response.parsedBody?.rotaId

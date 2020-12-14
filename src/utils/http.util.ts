@@ -1,8 +1,8 @@
 interface HttpResponse<T> extends Response {
-  parsedBody?: T
+  parsedBody?: T;
 }
 
-const BASE_PATH: string = `https://clava.io/api`
+const BASE_PATH = `https://clava.io/api`
 
 export async function http<T>(
   path: RequestInfo
@@ -12,12 +12,11 @@ export async function http<T>(
     method: 'GET',
     cache: 'no-cache'
   });
-  try {
-    response.parsedBody = await response.json();
-  } catch (error) {}
 
   if (!response.ok || response.status !== 200) {
     throw new Error(response.statusText)
+  } else {
+    response.parsedBody = await response.json();
   }
 
   return response;
