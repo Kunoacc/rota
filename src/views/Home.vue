@@ -26,9 +26,14 @@
         <v-toolbar-title class="white--text">Rota</v-toolbar-title>
         <v-spacer></v-spacer>
 
+        <v-btn @click="populateData" :loading="userListLoading || rotaListLoading" :disabled="userListLoading || rotaListLoading" class="mr-4">
+          populate
+        </v-btn>
+
         <v-btn @click="generateNewRota" :loading="newRotaLoading" :disabled="newRotaLoading">
           generate rota
         </v-btn>
+        
 
         <template v-slot:extension v-if="!rotaListLoading">
           <v-tabs v-model="tab" align-with-title fixed-tabs>
@@ -126,9 +131,7 @@ import { filter } from 'vue/types/umd';
 export default Vue.extend({
   name: 'Home',
   async created() {
-    await this.loadRotaList()
-    await this.loadUserList()
-    this.activeRota = this.rotaList[0]
+    await this.populateData()
   },
   data: () => ({
     drawer: null,
@@ -248,6 +251,12 @@ export default Vue.extend({
     },
     getEventColor(event: Event) {
       return event.color;
+    },
+    async populateData(){
+      await this.loadUserList()
+      await this.loadRotaList()
+      this.selectedUser = undefined as unknown as User
+      this.activeRota = this.rotaList[0]
     }
   },
   watch: {
