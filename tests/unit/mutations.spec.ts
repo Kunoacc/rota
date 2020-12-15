@@ -1,7 +1,7 @@
 import { mutations, Store } from '@/store'
 import StoreConfig, { ROTA_LIST, USERS } from '../store-config'
 
-const { SET_ROTA_LIST, SET_ROTA_LIST_LOADING ,SET_USER_LIST, SET_USER_LIST_LOADING, SET_NEW_ROTA_LOADING } = mutations;
+const { SET_ROTA_LIST, SET_ROTA_LIST_LOADING ,SET_USER_LIST, SET_USER_LIST_LOADING, SET_NEW_ROTA_LOADING, SET_SUCCESS, SET_ERROR } = mutations;
 
 describe('Testing mutations', () => {
 
@@ -15,7 +15,7 @@ describe('Testing mutations', () => {
     const state: Store = StoreConfig.state
     SET_ROTA_LIST_LOADING(state, false)
     expect(state.rotaListLoading).toEqual(false)
-    
+
     SET_ROTA_LIST_LOADING(state, true)
     expect(state.rotaListLoading).toEqual(true)
   })
@@ -42,6 +42,23 @@ describe('Testing mutations', () => {
 
     SET_NEW_ROTA_LOADING(state, true)
     expect(state.newRotaLoading).toEqual(true)
+  }),
+
+  it('Sets success message', () => {
+    const state: Store = StoreConfig.state
+
+    const successMessage = 'This completed successfully'
+    SET_SUCCESS(state, successMessage)
+    expect(state.success).toEqual(successMessage)
   })
+
+  it('Sets error Messages', () => {
+    const state: Store = StoreConfig.state
+
+    const errorMessage = 'This failed successfully'
+    SET_ERROR(state, errorMessage)
+    expect(state.error).toEqual(errorMessage)
+  })
+
 })
 

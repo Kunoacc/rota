@@ -7,7 +7,7 @@ import { DEFAULT_API_ERROR_RESPONSE, DEFAULT_MESSAAGE_TIMEOUT } from '@/constant
 
 Vue.use(Vuex)
 
-interface Store {
+export interface Store {
   rotaList: RotaList[];
   userList: User[];
   activeUser: undefined | User;
@@ -120,7 +120,7 @@ export const getters = {
       ...rota,
       rotas: rota.rotas.filter(rotaData => rotaData?.userId === state.activeUser?.userId)
     })
-    ).filter(rota => rota.rotas.length > 1)
+    ).filter(rota => rota.rotas.length > 0)
   }
 };
 
