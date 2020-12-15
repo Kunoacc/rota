@@ -10,7 +10,7 @@ export class RotaList {
   public rotas: Rota[];
 
   constructor(data: any = {}) {
-    this.rotaId = data.rotaId ?? ''
+    this.rotaId = data.rotaID ?? ''
     this.rotaPeriod = data.rotaPeriod ?? null
     this.rotas = data.rotas ?? []
   }
@@ -20,12 +20,12 @@ export class RotaList {
     userMap: Record<string, User>;
   }): RotaList {
     const rotaList = (response?.rotaData?.rota || []).map((rota: any) => {
-      return new Rota({
+      return Rota.generateFromAPI({
         ...rota,
         user: response?.userMap[rota?.userId]
       });
     });
-
+    
     return new RotaList({
       rotaId: response?.rotaData?.rotaID,
       rotaPeriod: response?.rotaData?.period,

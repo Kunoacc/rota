@@ -4,7 +4,7 @@ export class User {
 
   constructor(data: any = {}) {
     this.userId = data.userId ?? ''
-    this.name = data.name ?? ''
+    this.name = data.user ?? data.name ?? ''
   }
 
   public static generateFromAPI(response: any = {}): User {

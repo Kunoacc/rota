@@ -11,7 +11,7 @@ export default new Vuex.Store({
   state: {
     rotaList: [] as RotaList[],
     userList: [] as User[],
-    activeUser: null as unknown as User,
+    activeUser: undefined as unknown as User,
     userListLoading: false,
     rotaListLoading: false,
     newRotaLoading: false,
@@ -52,7 +52,7 @@ export default new Vuex.Store({
         const rotaList = await api.getRotaList()
         commit('SET_ROTA_LIST', rotaList)
       } catch (err) {
-        commit('SET_ERROR', err || DEFAULT_API_ERROR_RESPONSE)
+        commit('SET_ERROR', err?.message || DEFAULT_API_ERROR_RESPONSE)
       } finally {
         commit('SET_ROTA_LIST_LOADING', false)
       }
@@ -65,7 +65,7 @@ export default new Vuex.Store({
         const userList = await api.getUserList()
         commit('SET_USER_LIST', userList)
       } catch (err) {
-        commit('SET_ERROR', err || DEFAULT_API_ERROR_RESPONSE)
+        commit('SET_ERROR', err?.message || DEFAULT_API_ERROR_RESPONSE)
       } finally {
         commit('SET_USER_LIST_LOADING', false)
       }
@@ -78,6 +78,7 @@ export default new Vuex.Store({
         const newRota = await api.getNewRota();
         const newRotaExistsInStore = state.rotaList.findIndex(rota => rota.rotaId === newRota.rotaId) > -1
 
+        console.log(newRota)
         if (newRotaExistsInStore) {
           throw new Error('Error generating rota')
         }
@@ -86,7 +87,7 @@ export default new Vuex.Store({
         commit('SET_ROTA_LIST', updatedRotaList)
         commit('SET_SUCCESS', 'New rota generated')
       } catch(err) {
-        commit('SET_ERROR', err || DEFAULT_API_ERROR_RESPONSE)
+        commit('SET_ERROR', err?.message || DEFAULT_API_ERROR_RESPONSE)
       } finally {
         commit('SET_NEW_ROTA_LOADING', false);
       }
@@ -101,7 +102,7 @@ export default new Vuex.Store({
     getUserRotas: (state) => {
       return state.rotaList.reduce((userRotaList, rota) => {
         const tempRota = rota;
-        tempRota.rotas = tempRota.rotas.filter(rotaData => rotaData.userId === state.activeUser.userId);
+        tempRota.rotas = tempRota.rotas.filter(rotaData => rotaData?.userId === state.activeUser?.userId) ?? [];
 
         if (tempRota.rotas.length > 0) {
           userRotaList.push(tempRota)
