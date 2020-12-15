@@ -53,6 +53,7 @@ export default new Vuex.Store({
         commit('SET_ROTA_LIST', rotaList)
       } catch (err) {
         commit('SET_ERROR', err?.message || DEFAULT_API_ERROR_RESPONSE)
+        setTimeout(() => commit('SET_ERROR', ''), DEFAULT_MESSAAGE_TIMEOUT)
       } finally {
         commit('SET_ROTA_LIST_LOADING', false)
       }
@@ -66,6 +67,7 @@ export default new Vuex.Store({
         commit('SET_USER_LIST', userList)
       } catch (err) {
         commit('SET_ERROR', err?.message || DEFAULT_API_ERROR_RESPONSE)
+        setTimeout(() => commit('SET_ERROR', ''), DEFAULT_MESSAAGE_TIMEOUT)
       } finally {
         commit('SET_USER_LIST_LOADING', false)
       }

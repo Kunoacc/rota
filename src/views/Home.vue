@@ -44,10 +44,11 @@
         </template>
       </v-app-bar>
 
-      <v-main class="grey lighten-4 px-10 py-10">
+      <v-main class="grey lighten-4 px-10 py-10 d-flex">
         <v-sheet
           tile
           class="d-flex align-center py-6"
+          v-if="!rotaListLoading"
         >
           <v-select
             v-model="activeRota"
@@ -60,20 +61,15 @@
           ></v-select>
         </v-sheet>
         <v-tabs-items v-model="tab" v-if="!rotaListLoading">
+
           <!-- Calendar Item -->
           <v-tab-item>
             <v-sheet tile height="54" class="d-flex align-center">
-              <!-- <v-btn icon class="ma-2" @click="$refs.calendar.prev()">
-                <v-icon>fas fa-chevron-circle-left</v-icon>
-              </v-btn> -->
               <v-spacer></v-spacer>
               <v-toolbar-title v-if="$refs.calendar">
                 {{ $refs.calendar.title }}
               </v-toolbar-title>
               <v-spacer></v-spacer>
-              <!-- <v-btn icon class="ma-2" @click="$refs.calendar.next()">
-                <v-icon>fas fa-chevron-circle-right</v-icon>
-              </v-btn> -->
             </v-sheet>
             <v-sheet height="700" class="mt-2">
               <v-calendar ref="calendar" 
@@ -87,6 +83,7 @@
             </v-sheet>
           </v-tab-item>
 
+          <!-- Accordion Item -->
           <v-tab-item>
             <v-card>
               <v-row justify="center">
@@ -103,8 +100,17 @@
           </v-tab-item>
 
         </v-tabs-items>
+        <v-card v-else class="d-flex flex-grow-1 align-center justify-center transparent" flat>
+          <v-progress-circular
+            :size="50"
+            :width="3"
+            color="black"
+            indeterminate
+          ></v-progress-circular>
+        </v-card>
       </v-main>
     </v-app>
+    
     <v-snackbar
       :timeout="-1"
       :value="true"
@@ -253,8 +259,7 @@ export default Vue.extend({
       return event.color;
     },
     async populateData(){
-      await this.loadUserList()
-      await this.loadRotaList()
+      await Promise.all([this.loadUserList(), this.loadRotaList()])
       this.selectedUser = undefined as unknown as User
       this.activeRota = this.rotaList[0]
     }
@@ -273,7 +278,7 @@ export default Vue.extend({
         end: this.$refs.calendar?.parsedEnd
       })
     },
-    error: function(newVal){
+    error: function(newVal: string){
       if (newVal) {
         this.showSnackBar = true
       } else {
