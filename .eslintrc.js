@@ -14,7 +14,8 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-async-promise-executor': 'warn'
+    'no-async-promise-executor': 'warn',
+    '@typescript-eslint/ban-ts-ignore': 'warn',
   },
   overrides: [
     {
