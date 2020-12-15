@@ -10,7 +10,7 @@ export class RotaList {
   public rotas: Rota[];
 
   constructor(data: any = {}) {
-    this.rotaId = data.rotaID ?? ''
+    this.rotaId = data.rotaId ?? ''
     this.rotaPeriod = data.rotaPeriod ?? null
     this.rotas = data.rotas ?? []
   }

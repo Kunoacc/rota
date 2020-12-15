@@ -100,7 +100,16 @@
         </v-tabs-items>
       </v-main>
     </v-app>
-
+    <v-snackbar
+      :timeout="-1"
+      :value="true"
+      :color="success ? `green` : `red`"
+      right
+      rounded="pill"
+      bottom
+      class="m"
+      v-model="showSnackBar"
+    >{{success || error || ''}}</v-snackbar>
   </div>
 </template>
 
@@ -128,7 +137,8 @@ export default Vue.extend({
     weekdays: [0, 1, 2, 3, 4, 5, 6],
     eventTypes: [],
     events: [] as Event[],
-    activeRota: {} as RotaList
+    activeRota: {} as RotaList,
+    showSnackBar: false
   }),
   computed: {
     ...mapState([
@@ -158,7 +168,7 @@ export default Vue.extend({
       let rotaData: RotaList;
       if (this.selectedUser !== undefined) {
         rotaData = (this.getUserRotas as RotaList[]).filter(rota => rota.rotaId === this.activeRota.rotaId)[0]
-        dates = new Set(rotaData.rotas.map(rota => rota.date))
+        dates = new Set(rotaData?.rotas?.map(rota => rota.date))
       } else {
         rotaData = (this.activeRota as RotaList)
         dates = new Set((this.activeRota as RotaList)?.rotas?.map(rota => rota.date)) 
@@ -206,9 +216,9 @@ export default Vue.extend({
       let eventCount: number;
 
       if (this.selectedUser !== undefined) {
-        filteredRotas = (this.getUserRotas as RotaList[]).filter(rota => rota.rotaId === this.activeRota.rotaId)[0]
-        min = new Date(`${filteredRotas.rotaPeriod.startDate}T00:00:00`)
-        max = new Date(`${filteredRotas.rotaPeriod.endDate}T23:59:59`)
+        filteredRotas = (this.getUserRotas as RotaList[]).filter(rota => rota.rotaId === this.activeRota.rotaId)?.[0] ?? {}
+        min = new Date(`${filteredRotas?.rotaPeriod?.startDate ?? start?.date}T00:00:00`)
+        max = new Date(`${filteredRotas?.rotaPeriod?.endDate ?? end?.date}T23:59:59`)
         eventCount = filteredRotas?.rotas?.length
       } else {
         filteredRotas = undefined
@@ -218,7 +228,7 @@ export default Vue.extend({
       }
       
       const days = (max.getTime() - min.getTime()) / 86400000
-
+      
       for (let i = 0; i < eventCount; i++) {
         const element: Rota = (filteredRotas ?? this.activeRota)?.rotas[i];
         const startTime: Date = new Date(`${element.date}${element.type === RotaType.morning ? 'T00:00:00' : 'T11:59:59'}`)
@@ -233,8 +243,8 @@ export default Vue.extend({
         }
         events.push(event)
       }
-      this.events = events
 
+      this.events = events
     },
     getEventColor(event: Event) {
       return event.color;
@@ -253,7 +263,21 @@ export default Vue.extend({
         start: this.$refs.calendar?.parsedStart,
         end: this.$refs.calendar?.parsedEnd
       })
-    }
+    },
+    error: function(newVal){
+      if (newVal) {
+        this.showSnackBar = true
+      } else {
+        this.showSnackBar = false
+      }
+    },
+    success: function(newVal){
+      if (newVal) {
+        this.showSnackBar = true
+      } else {
+        this.showSnackBar = false
+      }
+    },
   }
 });
 </script>

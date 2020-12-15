@@ -3,7 +3,7 @@ import { User } from '@/model/user.model'
 import api from '@/api'
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { DEFAULT_API_ERROR_RESPONSE } from '@/constants'
+import { DEFAULT_API_ERROR_RESPONSE, DEFAULT_MESSAAGE_TIMEOUT } from '@/constants'
 
 Vue.use(Vuex)
 
@@ -78,16 +78,18 @@ export default new Vuex.Store({
         const newRota = await api.getNewRota();
         const newRotaExistsInStore = state.rotaList.findIndex(rota => rota.rotaId === newRota.rotaId) > -1
 
-        console.log(newRota)
         if (newRotaExistsInStore) {
-          throw new Error('Error generating rota')
+          throw new Error(`Rota ${newRota.rotaId} already exists`)
         }
 
         const updatedRotaList = [...state.rotaList, newRota]
         commit('SET_ROTA_LIST', updatedRotaList)
         commit('SET_SUCCESS', 'New rota generated')
+        setTimeout(() => commit('SET_SUCCESS', ''), DEFAULT_MESSAAGE_TIMEOUT)
+
       } catch(err) {
         commit('SET_ERROR', err?.message || DEFAULT_API_ERROR_RESPONSE)
+        setTimeout(() => commit('SET_ERROR', ''), DEFAULT_MESSAAGE_TIMEOUT)
       } finally {
         commit('SET_NEW_ROTA_LOADING', false);
       }
@@ -100,16 +102,11 @@ export default new Vuex.Store({
 
   getters: {
     getUserRotas: (state) => {
-      return state.rotaList.reduce((userRotaList, rota) => {
-        const tempRota = rota;
-        tempRota.rotas = tempRota.rotas.filter(rotaData => rotaData?.userId === state.activeUser?.userId) ?? [];
-
-        if (tempRota.rotas.length > 0) {
-          userRotaList.push(tempRota)
-        }
-
-        return userRotaList;
-      }, [] as RotaList[]);
+      return state.rotaList.map(rota => ({
+        ...rota,
+        rotas: rota.rotas.filter(rotaData => rotaData?.userId === state.activeUser?.userId)
+      })
+      ).filter(rota => rota.rotas.length > 1)
     }
   }
 })

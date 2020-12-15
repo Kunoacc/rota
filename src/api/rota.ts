@@ -47,9 +47,10 @@ export default {
     try {
       const response = await http<RotaList>(`rota/${rotaId}`);
       const rota: RotaList = RotaList.generateFromAPI({
-        rotaData: response.parsedBody,
+        rotaData: response?.parsedBody,
         userMap
       });
+      
       return rota;
     } catch (error) {
       throw new Error(error?.message ?? 'An error occurred while getting the rota, please try again');
