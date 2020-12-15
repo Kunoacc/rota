@@ -12,22 +12,24 @@ Clone the project to your local system, `cd` into the directory and run the belo
 yarn install
 ```
 
-### Compiles and fires hot-reload for development
+
+Other commands include:
+### To Compiles and fire hot-reloading for development...
 ```
 yarn serve
 ```
 
-### Compile code and minifies for production
+### To Compile code and minify for production...
 ```
 yarn build
 ```
 
-### Runs the unit tests
+### To run the unit tests...
 ```
 yarn test:unit
 ```
 
-### Lints and fixes files
+### To lints and fix files...
 ```
 yarn lint
 ```
