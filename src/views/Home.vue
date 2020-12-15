@@ -44,7 +44,7 @@
         </template>
       </v-app-bar>
 
-      <v-main class="grey lighten-4 px-10 py-10 d-flex">
+      <v-main class="grey lighten-4 px-5 py-5 px-lg-10 py-lg-10 d-flex">
         <v-sheet
           tile
           class="d-flex align-center py-6"
@@ -56,7 +56,7 @@
             dense
             outlined
             hide-details
-            class="mx-14"
+            class="mx-lg-12"
             label="Rota Period"
           ></v-select>
         </v-sheet>
