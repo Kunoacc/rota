@@ -132,7 +132,6 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import { RotaList } from '@/model/rota-list.model';
 import { Rota } from '@/model/rota.model';
 import { RotaType } from '@/model/rota-type.enum';
-import { filter } from 'vue/types/umd';
 
 export default Vue.extend({
   name: 'Home',
@@ -268,14 +267,14 @@ export default Vue.extend({
     selectedUser: function(newVal?: number){
       this.setActiveUser(newVal !== undefined ? (this.userList as User[])?.[newVal] : undefined)
       this.getEvents({
-        start: this.$refs.calendar?.parsedStart,
-        end: this.$refs.calendar?.parsedEnd
+        start: (this.$refs.calendar as any)?.parsedStart,
+        end: (this.$refs.calendar as any)?.parsedEnd
       })
     },
     activeRota: function(val?: RotaList) {
       this.getEvents({
-        start: this.$refs.calendar?.parsedStart,
-        end: this.$refs.calendar?.parsedEnd
+        start: (this.$refs.calendar as any)?.parsedStart,
+        end: (this.$refs.calendar as any)?.parsedEnd
       })
     },
     error: function(newVal: string){
