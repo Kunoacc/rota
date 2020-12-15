@@ -1,6 +1,6 @@
 # Lineten Rota Vue Test
 
-This is a code test for [lineten](https://lineten.co.uk) for the role of a Vue.js Frontend Developer. This project was Built with Vue.js and Vuetify + Typescript ❤️
+This is a code test for [lineten](https://lineten.com) for the role of a Vue.js Frontend Developer. This project was Built with Vue.js and Vuetify + Typescript ❤️
 
 ![image](https://user-images.githubusercontent.com/16244990/102277525-b4d48380-3f28-11eb-9757-9751c99b7862.png)
 
